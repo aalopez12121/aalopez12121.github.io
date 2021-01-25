@@ -46,6 +46,10 @@ game.background = new GameBackground('back.png', game.canvas);
  // Game State
   game.currentState = INITIAL;
 
+  // Wall Factory
+  game.wallFactory = new WallFactory(game.canvas);
+  game.wallFactory.generateWalls();
+
 }
 FlappyMonster.prototype.start = function() {
    // Base
@@ -133,16 +137,52 @@ You are inside the FlappyMonster.prototype.drawGamePlayingScreen = function() {
 // Clear Canvas
   game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
 
+  // Draw Walls
+  game.drawWalls();
+
+  console.log(game.wallFactory.walls);
     
   });
 };
   / Draw Background
   game.animateBackground();
 
+FlappyMonster.prototype.drawWalls = function() {
+  // Base
+  var game = this;
+
+  // Draw Walls
+  var walls = game.wallFactory.walls;
+
+  for(var i = 0; i < walls.length; i++){
+    walls[i].draw();
+    walls[i].x = walls[i].x - game.velocity;
+  }
+
+  game.removeExtraWalls();
+
+};
+
 
 
   }
-//text
+
+   FlappyMonster.prototype.removeExtraWalls = function() {
+  // Base
+  var game = this;
+
+  // Draw Walls
+  var walls = game.wallFactory.walls;
+
+  for(var i = 0; i < walls.length; i++){
+    if(walls[i].x + walls[i].w < 0){
+      // remove
+      walls.shift();
+    }
+  }
+};
+     
+            //text
 game.context.fillStyle = 'white';
   game.context.font = '36px Arial';
   game.context.fillText('Game Over :(', game.canvas.width / 2 - 100, game.canvas.height / 2);
