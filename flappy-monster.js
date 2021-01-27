@@ -158,14 +158,51 @@ FlappyMonster.prototype.drawWalls = function() {
     walls[i].draw();
     walls[i].x = walls[i].x - game.velocity;
   }
-
-  game.removeExtraWalls();
+/ Collision Check
+  game.checkCollisions();
+ game.removeExtraWalls();
 
 };
-
-
-
   }
+if(game.isCollided(game.monster, walls[i])){
+      game.currentState = GAME_OVER;        
+FlappyMonster.prototype.checkCollisions = function() {
+  // Base
+  var game = this;
+var walls = game.wallFactory.walls;
+
+  for(var i = 0; i < walls.length; i++){
+    if(){
+      game.currentState = GAME_OVER;
+    }
+  }
+};
+FlappyMonster.prototype.isCollided = function(monster, wall) {
+  // Base
+  var game = this;
+  var isCollided = true;
+
+  // Monster Coordinates
+  var monsterTop = game.monster.y;
+  var monsterBottom = game.monster.y + game.monster.h;
+  var monsterRight = game.monster.x + game.monster.w;
+  var monsterLeft = game.monster.x;
+
+  // Wall Coordinates
+  var wallTop = wall.y + wall.h + wall.gap; // top of lower wall
+  var wallBottom = wall.y + wall.h // bottom of upper wall
+  var wallRight = wall.x + wall.w;
+  var wallLeft = wall.x;
+
+  if((monsterBottom < wallTop  && monsterTop > wallBottom)
+    || (monsterLeft > wallRight)
+    || (monsterRight < wallLeft)){
+    isCollided = false;
+  }
+
+  return isCollided;
+}
+
 
    FlappyMonster.prototype.removeExtraWalls = function() {
   // Base
