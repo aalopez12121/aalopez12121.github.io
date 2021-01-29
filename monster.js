@@ -38,10 +38,20 @@ Monster.prototype.draw = function() {
 
   // Draw
   if(monster.img != null){
+     monster.vy = monster.vy + monster.g;
+     monster.y = monster.y + monster.vy;
+
+     if(monster.y + monster.h > monster.canvas.height){
+       monster.y = monster.canvas.height - monster.h;
+       monster.vy = 0;
+     }else if(monster.y < 0){
+       monster.y = 0;
+       monster.vy = 0;
+     }
+
     monster.context.drawImage(monster.img, monster.frame * 115, 0, 115, 100, monster.x, monster.y, monster.w, monster.h);
     monster.frame++;
     monster.frame %= 4;
   }
 };
-
 
