@@ -280,3 +280,4 @@ FlappyMonster.prototype.drawGameOverScreen = function() {
   game.context.font = '24px Arial';
   game.context.fillText('Press R to Restart!', game.canvas.width / 2 - 100, game.canvas.height / 2 + 50);
 };
+.
