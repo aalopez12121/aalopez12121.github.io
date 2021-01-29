@@ -80,14 +80,27 @@ FlappyMonster.prototype.bindEvents = function() {
   // Mouse Listener
   game.canvas.addEventListener('click', function(event) {
     switch (game.currentState) {
-      case INITIAL:
+     game.wallFactory.generateWalls();
+     case INITIAL:
         game.currentState = GAME_PLAYING;
         break;
-      case GAME_PLAYING:
+      game.reset();
+case GAME_PLAYING:
         // DRAW GAME PLAYING SCREEN
         break;
     }
   });
+FlappyMonster.prototype.reset = function() {
+  // Base
+  var game = this;
+
+  // Reset States
+  game.gameScore.start = new Date();
+  game.gameScore.score = 0;
+  game.wallFactory.walls = [];
+  game.monster.x = 115;
+  game.monster.y = 115;
+};
 
   // Key Listener
   window.addEventListener('keydown', function(event) {
@@ -151,6 +164,7 @@ FlappyMonster.prototype.drawInitialScreen = function() {
   game.context.fillStyle = 'white';
   game.context.font = '36px Arial';
   game.context.fillText('Click to Start!', game.canvas.width / 2 - 100, game.canvas.height / 2);
+  
 };
 
 FlappyMonster.prototype.drawGamePlayingScreen = function() {
@@ -171,7 +185,48 @@ FlappyMonster.prototype.drawGamePlayingScreen = function() {
 
   console.log(game.wallFactory.walls);
 
+  // Collision Check
+  game.checkCollisions();
+
 };
+
+FlappyMonster.prototype.checkCollisions = function() {
+  // Base
+  var game = this;
+var walls = game.wallFactory.walls;
+(game.isCollided(game.monster, walls[i])){
+      game.currentState = GAME_OVER;
+for(var i = 0; i < walls.length; i++){
+    if(){
+      game.currentState = GAME_OVER;
+    }
+  }
+};
+FlappyMonster.prototype.isCollided = function(monster, wall) {
+  // Base
+  var game = this;
+  var isCollided = true;
+
+  // Monster Coordinates
+  var monsterTop = game.monster.y;
+  var monsterBottom = game.monster.y + game.monster.h;
+  var monsterRight = game.monster.x + game.monster.w;
+  var monsterLeft = game.monster.x;
+
+  // Wall Coordinates
+  var wallTop = wall.y + wall.h + wall.gap; // top of lower wall
+  var wallBottom = wall.y + wall.h // bottom of upper wall
+  var wallRight = wall.x + wall.w;
+  var wallLeft = wall.x;
+
+  if((monsterBottom < wallTop  && monsterTop > wallBottom)
+    || (monsterLeft > wallRight)
+    || (monsterRight < wallLeft)){
+    isCollided = false;
+  }
+
+  return isCollided;
+}
 
 FlappyMonster.prototype.drawWalls = function() {
   // Base
@@ -240,11 +295,12 @@ FlappyMonster.prototype.drawGameOverScreen = function() {
 
   // Text
   game.context.fillStyle = 'white';
-  game.context.font = '36px Arial';
-  game.context.fillText('Game Over :(', game.canvas.width / 2 - 100, game.canvas.height / 2);
+  game.context.font = '54px Arial';
+  game.context.fillText('Your Score : ' + game.gameScore.score, game.canvas.width / 2 - 180, game.canvas.height / 2 - 100);
   game.context.font = '24px Arial';
   game.context.fillText('Press R to Restart!', game.canvas.width / 2 - 100, game.canvas.height / 2 + 50);
 };
+
 
 
 
